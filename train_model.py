@@ -50,6 +50,8 @@ os.makedirs("models", exist_ok=True)
 model.save("models/model_weights.npz")
 print("Model training complete and saved to models/model_weights.npz")
 
+output_dir="pickle_loss"
+os.makedirs(output_dir, exist_ok=True)
 # === Plot loss curve with log Y axis and normal tick format ===
 fig=plt.figure(figsize=(10, 5))
 plt.plot(loss_history, label="Avg Loss")
@@ -67,38 +69,48 @@ plt.grid(True, which="both", linestyle="--", linewidth=0.5)
 plt.legend()
 plt.tight_layout()
 
-output_dir="/pickle_loss"
-os.makedirs(output_dir, exist_ok=True)
-
 fig_filename = os.path.join(output_dir, f"loss_plot_{config.iteration_number}.fig.pickle")
-
+with open(fig_filename, "wb") as f:
+    pickle.dump(fig, f)
+    
 viewer_code=f"""
 import pickle
 import matplotlib.pyplot as plt
 import os
+import matplotlib
 
-fig_path="loss_plot_{config.iteration_number}.fig.pickle"
+backends = ['TkAgg', 'Qt5Agg', 'WXAgg']
+for backend in backends:
+    try:
+        matplotlib.use(backend)
+        break
+    except:
+        continue
+
+script_dir = os.path.dirname(os.path.abspath(__file__))
+fig_path = os.path.join(script_dir, "loss_plot_{config.iteration_number}.fig.pickle")
 
 if os.path.exists(fig_path):
     with open(fig_path, "rb") as f:
         fig = pickle.load(f)
     plt.show()
 else:
-    print(f"File not found {{fig_path}}")
+    print(f"File not found: {{fig_path}}")
 """
 
-viewer_py_path=os.path.join(output_dir, f"loss_plot_{config.iteration_number}.fig_pickle")
+viewer_py_path=os.path.join(output_dir, f"view_loss_plot_{config.iteration_number}.py")
 with open(viewer_py_path, "w") as f:
     f.write(viewer_code.strip())
 
-batch_code=f"""@echo off
-cd /d %~dp0
-echo Opening loss plot #{config.iteration_number}
-py view_loss_plot{config.iteration_number}.py
-pause
+batch_code=f"""
+@echo off
+start "" "pythonw.exe" "%~dp0../pickle_loss/view_loss_plot_{config.iteration_number}.py
+exit
 """
-
-batch_path= os.path.join("batches", f"loss_plot_batch_{config.iteration_number}.batch")
+os.makedirs("batches", exist_ok=True)
+batch_path= os.path.join("batches", f"loss_plot_batch_{config.iteration_number}.bat")
+with open(batch_path, "w") as f:
+    f.write(batch_code)
 
 
 
