@@ -47,7 +47,7 @@ for epoch in range(epochs):
 
 # === Save trained model ===
 os.makedirs("models", exist_ok=True)
-model.save("models/model_weights.npz")
+model.save(f"size{config.iteration_number}/models/model_weights.npz")
 print("Model training complete and saved to models/model_weights.npz")
 
 # === Plot loss curve with log Y axis and normal tick format ===
