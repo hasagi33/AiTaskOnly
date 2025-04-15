@@ -1,5 +1,6 @@
 import numpy as np
 from matplotlib.ticker import ScalarFormatter
+import pickle
 
 import config
 from task_model import TaskDurationModel
@@ -50,7 +51,7 @@ model.save("models/model_weights.npz")
 print("Model training complete and saved to models/model_weights.npz")
 
 # === Plot loss curve with log Y axis and normal tick format ===
-plt.figure(figsize=(10, 5))
+fig=plt.figure(figsize=(10, 5))
 plt.plot(loss_history, label="Avg Loss")
 plt.title("Training Loss Over Epochs")
 plt.xlabel("Epoch")
@@ -65,4 +66,39 @@ plt.ticklabel_format(style='plain', axis='y')
 plt.grid(True, which="both", linestyle="--", linewidth=0.5)
 plt.legend()
 plt.tight_layout()
-plt.show()
+
+output_dir="/pickle_loss"
+os.makedirs(output_dir, exist_ok=True)
+
+fig_filename = os.path.join(output_dir, f"loss_plot_{config.iteration_number}.fig.pickle")
+
+viewer_code=f"""
+import pickle
+import matplotlib.pyplot as plt
+import os
+
+fig_path="loss_plot_{config.iteration_number}.fig.pickle"
+
+if os.path.exists(fig_path):
+    with open(fig_path, "rb") as f:
+        fig = pickle.load(f)
+    plt.show()
+else:
+    print(f"File not found {{fig_path}}")
+"""
+
+viewer_py_path=os.path.join(output_dir, f"loss_plot_{config.iteration_number}.fig_pickle")
+with open(viewer_py_path, "w") as f:
+    f.write(viewer_code.strip())
+
+batch_code=f"""@echo off
+cd /d %~dp0
+echo Opening loss plot #{config.iteration_number}
+py view_loss_plot{config.iteration_number}.py
+pause
+"""
+
+batch_path= os.path.join("batches", f"loss_plot_batch_{config.iteration_number}.batch")
+
+
+

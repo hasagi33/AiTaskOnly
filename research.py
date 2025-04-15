@@ -6,6 +6,9 @@ import time
 import sys
 import platform
 
+import config
+
+
 def get_python_command():
     """Determine the best Python command to use based on the platform"""
     # Try different Python commands and use the first one that works
@@ -76,18 +79,21 @@ def main():
 
     num1 = sys.argv[1]
 
-    if num1=="new":            #optional skip the dataset generation
+    if num1!="old":            #optional skip the dataset generation
         # Step 1: Clean up
         clean_directories()
-
+        for i in range(10):
         # Step 2: Generate dataset
-        run_command(f"{python_cmd} dataset_generator.py", "Dataset Generation")
-
-        # Step 3: Preprocess dataset
-        run_command(f"{python_cmd} preprocess_dataset.py", "Data Preprocessing")
-
-    # Step 4: Train model
-    run_command(f"{python_cmd} train_model.py", "Model Training")
+            run_command(f"{python_cmd} dataset_generator.py", "Dataset Generation")
+            # Step 3: Preprocess dataset
+            run_command(f"{python_cmd} preprocess_dataset.py", "Data Preprocessing")
+            # Step 4: Train model
+            run_command(f"{python_cmd} train_model.py", "Model Training")
+            config.iteration_number+=1
+        if config.batch_size<=8192:
+            config.batch_size*=2
+        if config.dataset_rows<=100000000:
+            config.dataset_rows*=10
     
     print("\n✨ Retraining process completed successfully!")
     print("You can now use the new model for predictions.")
