@@ -79,22 +79,36 @@ def main():
 
     num1 = sys.argv[1]
 
-    if num1!="old":            #optional skip the dataset generation
+    if num1=="research":
+        os.mkdir("models")
+        for i in range(5):
+            # clean_directories()
+            config.current_folder=''.join(["models/","size_",str(i)])
+            print(config.current_folder+" AAAA")
+            os.mkdir(config.current_folder)
+
+            run_command(f"{python_cmd} dataset_generator.py {config.current_folder}", "Dataset Generation")
+            run_command(f"{python_cmd} preprocess_dataset.py {config.current_folder}", "Data Preprocessing")
+            config.batcčh_size=16
+            for j in range(0):
+                config.current_model=''.join(["rows_",str(i),"_batch_",str(j)])
+
+                run_command(f"{python_cmd} train_model.py", "Model Training")
+
+                config.batch_size*=4
+
+            config.dataset_rows*=10
+
+    elif num1!="old":            #optional skip the dataset generation
         # Step 1: Clean up
         clean_directories()
-        for i in range(10):
         # Step 2: Generate dataset
-            run_command(f"{python_cmd} dataset_generator.py", "Dataset Generation")
-            # Step 3: Preprocess dataset
-            run_command(f"{python_cmd} preprocess_dataset.py", "Data Preprocessing")
-            # Step 4: Train model
-            run_command(f"{python_cmd} train_model.py", "Model Training")
-            config.iteration_number+=1
-        if config.batch_size<=8192:
-            config.batch_size*=2
-        if config.dataset_rows<=100000000:
-            config.dataset_rows*=10
-    
+        run_command(f"{python_cmd} dataset_generator.py", "Dataset Generation")
+        # Step 3: Preprocess dataset
+        run_command(f"{python_cmd} preprocess_dataset.py", "Data Preprocessing")
+        # Step 4: Train model
+        run_command(f"{python_cmd} train_model.py", "Model Training")
+
     print("\n✨ Retraining process completed successfully!")
     print("You can now use the new model for predictions.")
 

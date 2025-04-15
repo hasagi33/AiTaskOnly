@@ -1,5 +1,9 @@
+import sys
+
 import pandas as pd
 import numpy as np
+
+import config
 from task_input import encode_task
 import json
 import os
@@ -7,7 +11,9 @@ os.makedirs("processed", exist_ok=True)
 
 
 # === Load raw dataset ===
-df = pd.read_csv("realistic_tasks_large.csv")
+current_folder=sys.argv[1]
+
+df = pd.read_csv(current_folder+"/"+"large_tasks.csv")
 print("Starting preprocessing...")
 
 # === Fill or drop missing values ===
@@ -63,10 +69,12 @@ denom[denom == 0] = 1e-6
 
 X_scaled = (X - scaler["min"]) / denom
 
+os.mkdir(current_folder+"/"+"processed")
+
 # === Save outputs ===
-np.save("processed/X_scaled.npy", X_scaled)
-np.save("processed/y.npy", y)
-with open("processed/scaler.json", "w") as f:
+np.save((current_folder+"/processed/X_scaled.npy"), X_scaled)
+np.save((current_folder+"/processed/y.npy"), y)
+with open((current_folder+"/processed/scaler.json"), "w") as f:
     json.dump(scaler, f)
 
-print("Preprocessing complete! Data saved to /processed/")
+print("Preprocessing complete! Data saved to folder+/processed/")
