@@ -1,8 +1,12 @@
-import pandas as pd
+import csv
 import random
 import numpy as np
+import time
+from tqdm import tqdm  # optional, install with: pip install tqdm
+
 import config
-from config import dataset_rows
+
+start = time.time()
 
 TASK_TYPES = [
     "Code Review", "Bug Fix", "Feature Dev", "Testing", "Documentation",
@@ -72,7 +76,6 @@ def random_task():
         duration *= 1.05
 
     duration *= priority_factor
-    # duration += random.uniform(-0.1, 0.1)     no random
     duration = round(np.clip(duration, 0.5, 8.0), 8)
 
     return {
@@ -98,15 +101,25 @@ def random_task():
         "predicted_duration_days": duration
     }
 
-# Generate data with hierarchy-respecting logic
-data = []
+fieldnames = [
+    "task_type", "complexity", "assignee_level", "tech_stack", "task_priority",
+    "story_points", "team_size", "num_dependencies", "estimated_hours",
+    "sprint_day", "created_hour", "remote_work", "meetings_today", "blocker_flag",
+    "avg_experience", "juniors", "mediors", "seniors", "tech_leads", "predicted_duration_days"
+]
 
-while len(data) < config.dataset_rows:
-    task = random_task()
-    if task:
-        data.append(task)
+with open("realistic_tasks_large.csv", mode="w", newline="") as file:
+    writer = csv.DictWriter(file, fieldnames=fieldnames)
+    writer.writeheader()
 
-# Save dataset
-df = pd.DataFrame(data)
-df.to_csv("realistic_tasks_large.csv", index=False)
-print("Saved realistic_tasks_large.csv with", len(data), "rows")
+    with tqdm(total=config.dataset_rows, desc="Generating tasks") as pbar:
+        count = 0
+        while count < config.dataset_rows:
+            task = random_task()
+            if task:
+                writer.writerow(task)
+                count += 1
+                pbar.update(1)
+
+end = time.time()
+print(f"Saved realistic_tasks_large.csv with {config.dataset_rows:,} rows in {end - start:.2f} seconds.")

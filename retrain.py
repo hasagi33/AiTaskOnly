@@ -73,16 +73,19 @@ def main():
     
     # Get the appropriate Python command for this system
     python_cmd = get_python_command()
-    
-    # Step 1: Clean up
-    clean_directories()
-    
-    # Step 2: Generate dataset
-    run_command(f"{python_cmd} dataset_generator.py", "Dataset Generation")
-    
-    # Step 3: Preprocess dataset
-    run_command(f"{python_cmd} preprocess_dataset.py", "Data Preprocessing")
-    
+
+    num1 = sys.argv[1]
+
+    if num1=="new":            #optional skip the dataset generation
+        # Step 1: Clean up
+        clean_directories()
+
+        # Step 2: Generate dataset
+        run_command(f"{python_cmd} dataset_generator.py", "Dataset Generation")
+
+        # Step 3: Preprocess dataset
+        run_command(f"{python_cmd} preprocess_dataset.py", "Data Preprocessing")
+
     # Step 4: Train model
     run_command(f"{python_cmd} train_model.py", "Model Training")
     
