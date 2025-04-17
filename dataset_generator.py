@@ -7,8 +7,9 @@ import numpy as np
 import time
 from tqdm import tqdm  # optional, install with: pip install tqdm
 
-import config
-from config import current_path
+from config import Config
+
+Config.load()
 
 start = time.time()
 
@@ -115,15 +116,15 @@ fieldnames = [
 current_folder=sys.argv[1]
 
 print(current_folder+" JABA")
-# current_folder+"/"+"large_tasks.csv"
+# current_folder+"/"+"dataset.csv"
 
-with open(current_folder+"/"+"large_tasks.csv", mode="a", newline="") as file:
+with open(current_folder+"/"+"dataset.csv", mode="a", newline="") as file:
     writer = csv.DictWriter(file, fieldnames=fieldnames)
     writer.writeheader()
 
-    with tqdm(total=config.dataset_rows, desc="Generating tasks") as pbar:
+    with tqdm(total=Config.dataset_rows, desc="Generating tasks") as pbar:
         count = 0
-        while count < config.dataset_rows:
+        while count < Config.dataset_rows:
             task = random_task()
             if task:
                 writer.writerow(task)
@@ -131,4 +132,4 @@ with open(current_folder+"/"+"large_tasks.csv", mode="a", newline="") as file:
                 pbar.update(1)
 
 end = time.time()
-print(f"Saved realistic_tasks_large.csv with {config.dataset_rows:,} rows in {end - start:.2f} seconds.")
+print(f"Saved realistic_tasks_large.csv with {Config.dataset_rows:,} rows in {end - start:.2f} seconds.")

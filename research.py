@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import os
+from pathlib import Path
 import subprocess
 import shutil
 import time
@@ -52,16 +53,24 @@ def run_command(command, description):
         exit(result.returncode)
 
 def clean_directories():
-    """Remove previous model files and processed data"""
+    """Remove contents of models folder and other generated data"""
     print("\n🗑️  Cleaning up previous files...")
-    
-    # Files/directories to remove
-    paths = [
-        "./models",
-        "./processed",
-        "./realistic_tasks_large.csv"
-    ]
-    
+
+    paths = ["./processed", "./realistic_tasks_large.csv", "./models"]
+
+    # Add all contents inside ./models to be deleted
+    models_path = Path("./models")
+    if models_path.exists() and models_path.is_dir():
+        for item in models_path.iterdir():
+            paths.append(str(item))
+
+    Config.batch_size=16
+    Config.dataset_rows=1000
+    Config.iteration_number=1
+    Config.model_number=1
+    Config.current_folder=""
+    Config.save()
+    # Delete all paths
     for path in paths:
         if os.path.exists(path):
             if os.path.isdir(path):
@@ -71,48 +80,58 @@ def clean_directories():
                 print(f"Removing file: {path}")
                 os.remove(path)
 
+    # Optionally recreate the empty ./models folder
+    if not models_path.exists():
+        os.makedirs(models_path)
+        print("🆕 Recreated empty './models' directory.")
+
 def main():
     """Main function to orchestrate the retraining process"""
     print("\n🚀 Starting complete model retraining process")
     
     # Get the appropriate Python command for this system
     python_cmd = get_python_command()
-
+    original_folder = Config.current_folder
     num1 = sys.argv[1]
 
     if num1=="research":
         clean_directories()
-        os.mkdir("models")
+        base_folder = Path("models")
+        os.makedirs(base_folder, exist_ok=True)
 
-        run_command(f"{python_cmd} checkers.py ", "checking")
+        for i in range(10):
 
-        for i in range(0):
+            Config.current_folder = base_folder / f"size_{Config.iteration_number}"
+            os.makedirs(Config.current_folder, exist_ok=True)
 
-            Config.current_folder=''.join(["models/","size_",str(i)])
-            print(Config.current_folder+" AAAA")
-            os.mkdir(Config.current_folder)
+            print(Config.current_folder)
+            print(Config.current_folder)
 
             run_command(f"{python_cmd} dataset_generator.py {Config.current_folder}", "Dataset Generation")
             run_command(f"{python_cmd} preprocess_dataset.py {Config.current_folder}", "Data Preprocessing")
-            Config.batch_size=16
-            for j in range(0):
-                Config.current_model=''.join(["rows_",str(i),"_batch_",str(j)])
-
+            for j in range(3):
+                print(f"Starting training {Config.model_number}:")
                 run_command(f"{python_cmd} train_model.py {Config.current_folder}", "Model Training")
-
+                Config.model_number+=1
                 Config.batch_size*=4
-
+                Config.save()
+            Config.batch_size=16
             Config.dataset_rows*=10
-
-    elif num1!="old":            #optional skip the dataset generation
-        # Step 1: Clean up
+            Config.iteration_number+=1
+            Config.model_number=0
+            Config.save()
+    # elif num1!="old":            #optional skip the dataset generation
+    #     # Step 1: Clean up
+    #     clean_directories()
+    #     # Step 2: Generate dataset
+    #     run_command(f"{python_cmd} dataset_generator.py", "Dataset Generation")
+    #     # Step 3: Preprocess dataset
+    #     run_command(f"{python_cmd} preprocess_dataset.py", "Data Preprocessing")
+    #     # Step 4: Train model
+    #     run_command(f"{python_cmd} train_model.py", "Model Training")
+    elif num1=="clean":
         clean_directories()
-        # Step 2: Generate dataset
-        run_command(f"{python_cmd} dataset_generator.py", "Dataset Generation")
-        # Step 3: Preprocess dataset
-        run_command(f"{python_cmd} preprocess_dataset.py", "Data Preprocessing")
-        # Step 4: Train model
-        run_command(f"{python_cmd} train_model.py", "Model Training")
+        return
 
     print("\n✨ Retraining process completed successfully!")
     print("You can now use the new model for predictions.")

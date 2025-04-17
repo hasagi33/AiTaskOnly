@@ -7,14 +7,14 @@ import config
 from task_input import encode_task
 import json
 import os
-os.makedirs("processed", exist_ok=True)
 
 
 # === Load raw dataset ===
 current_folder=sys.argv[1]
 
-df = pd.read_csv(current_folder+"/"+"large_tasks.csv")
+df = pd.read_csv(current_folder+"/"+"dataset.csv")
 print("Starting preprocessing...")
+print(current_folder+"/"+"dataset.csv")
 
 # === Fill or drop missing values ===
 df = df.dropna()  # or use df.fillna(value)
