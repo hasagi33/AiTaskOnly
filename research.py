@@ -6,8 +6,9 @@ import time
 import sys
 import platform
 
-import config
+from config import Config
 
+Config.load()
 
 def get_python_command():
     """Determine the best Python command to use based on the platform"""
@@ -80,24 +81,28 @@ def main():
     num1 = sys.argv[1]
 
     if num1=="research":
+        clean_directories()
         os.mkdir("models")
-        for i in range(5):
-            # clean_directories()
-            config.current_folder=''.join(["models/","size_",str(i)])
-            print(config.current_folder+" AAAA")
-            os.mkdir(config.current_folder)
 
-            run_command(f"{python_cmd} dataset_generator.py {config.current_folder}", "Dataset Generation")
-            run_command(f"{python_cmd} preprocess_dataset.py {config.current_folder}", "Data Preprocessing")
-            config.batcčh_size=16
+        run_command(f"{python_cmd} checkers.py ", "checking")
+
+        for i in range(0):
+
+            Config.current_folder=''.join(["models/","size_",str(i)])
+            print(Config.current_folder+" AAAA")
+            os.mkdir(Config.current_folder)
+
+            run_command(f"{python_cmd} dataset_generator.py {Config.current_folder}", "Dataset Generation")
+            run_command(f"{python_cmd} preprocess_dataset.py {Config.current_folder}", "Data Preprocessing")
+            Config.batch_size=16
             for j in range(0):
-                config.current_model=''.join(["rows_",str(i),"_batch_",str(j)])
+                Config.current_model=''.join(["rows_",str(i),"_batch_",str(j)])
 
-                run_command(f"{python_cmd} train_model.py", "Model Training")
+                run_command(f"{python_cmd} train_model.py {Config.current_folder}", "Model Training")
 
-                config.batch_size*=4
+                Config.batch_size*=4
 
-            config.dataset_rows*=10
+            Config.dataset_rows*=10
 
     elif num1!="old":            #optional skip the dataset generation
         # Step 1: Clean up

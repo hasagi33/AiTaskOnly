@@ -1,3 +1,5 @@
+import sys
+
 import numpy as np
 from matplotlib.ticker import ScalarFormatter
 import pickle
@@ -46,8 +48,9 @@ for epoch in range(epochs):
         print(f"Epoch {epoch}: Avg Loss = {avg_loss:.4f}")
 
 # === Save trained model ===
-os.makedirs("models", exist_ok=True)
-model.save("models/model_weights.npz")
+current_folder = sys.argv[1]
+
+model.save(current_folder+"/"+"model_weights.npz")
 print("Model training complete and saved to models/model_weights.npz")
 
 # === Plot loss curve with log Y axis and normal tick format ===
