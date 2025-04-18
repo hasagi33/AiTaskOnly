@@ -115,7 +115,6 @@ fieldnames = [
 
 current_folder=sys.argv[1]
 
-print(current_folder+" JABA")
 # current_folder+"/"+"dataset.csv"
 
 with open(current_folder+"/"+"dataset.csv", mode="a", newline="") as file:

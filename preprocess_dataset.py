@@ -4,6 +4,7 @@ import pandas as pd
 import numpy as np
 
 import config
+from config import Config
 from task_input import encode_task
 import json
 import os
@@ -15,6 +16,7 @@ current_folder=sys.argv[1]
 df = pd.read_csv(current_folder+"/"+"dataset.csv")
 print("Starting preprocessing...")
 print(current_folder+"/"+"dataset.csv")
+Config.load()
 
 # === Fill or drop missing values ===
 df = df.dropna()  # or use df.fillna(value)
@@ -54,6 +56,7 @@ for _, row in df.iterrows():
 
 X = np.array(X)
 y = np.array(y)
+
 
 print(f"Encoded {len(X)} tasks. Skipped {bad_rows} bad rows.")
 

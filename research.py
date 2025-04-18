@@ -65,7 +65,7 @@ def clean_directories():
             paths.append(str(item))
 
     Config.batch_size=16
-    Config.dataset_rows=1000
+    Config.dataset_rows=100
     Config.iteration_number=1
     Config.model_number=1
     Config.current_folder=""
@@ -99,7 +99,9 @@ def main():
         base_folder = Path("models")
         os.makedirs(base_folder, exist_ok=True)
 
-        for i in range(10):
+        Config.save()
+
+        for i in range(5):
 
             Config.current_folder = base_folder / f"size_{Config.iteration_number}"
             os.makedirs(Config.current_folder, exist_ok=True)
@@ -113,7 +115,7 @@ def main():
                 print(f"Starting training {Config.model_number}:")
                 run_command(f"{python_cmd} train_model.py {Config.current_folder}", "Model Training")
                 Config.model_number+=1
-                Config.batch_size*=4
+                Config.batch_size*=16
                 Config.save()
             Config.batch_size=16
             Config.dataset_rows*=10
