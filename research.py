@@ -118,7 +118,7 @@ def main():
             Config.batch_size=16
             Config.dataset_rows*=10
             Config.iteration_number+=1
-            Config.model_number=0
+            Config.model_number=1
             Config.save()
     # elif num1!="old":            #optional skip the dataset generation
     #     # Step 1: Clean up
