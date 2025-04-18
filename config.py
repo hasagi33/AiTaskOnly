@@ -7,8 +7,8 @@ class Config:
     iteration_number = 1
     model_number = 1
     batch_size = 16
-    epochs = 300
-    dataset_rows = 1000
+    epochs = 10
+    dataset_rows = 10
     LEARNING_RATE = 0.0001
     current_folder=""
 

@@ -8,6 +8,7 @@ import matplotlib.pyplot as plt
 import os
 
 # === Load preprocessed data ===
+Config.load()
 X = np.load(f"models/size_{Config.iteration_number}/processed/X_scaled.npy")
 y = np.load(f"models/size_{Config.iteration_number}/processed/y.npy")
 
