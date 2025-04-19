@@ -64,7 +64,7 @@ class TaskDurationModel:
         return loss
 
 
-    def predict(self, task_dict, scaler_path="processed/scaler.json"):
+    def predict(self, task_dict, scaler_path):
         import json
         import sys
 

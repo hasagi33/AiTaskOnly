@@ -101,7 +101,7 @@ def main():
 
         Config.save()
 
-        for i in range(5):
+        for i in range(2):
 
             Config.current_folder = base_folder / f"size_{Config.iteration_number}"
             os.makedirs(Config.current_folder, exist_ok=True)
