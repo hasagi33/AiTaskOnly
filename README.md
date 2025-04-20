@@ -164,4 +164,4 @@ Feel free to fork the repo and submit pull requests to:
 
 ## Author
 
-Maintained by [@hasagi33](https://github.com/hasagi33)
+Maintained by [@hasagi33](https://github.com/hasagi33) and [@HananB27](https://github.com/HananB27)
