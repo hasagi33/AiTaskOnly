@@ -102,13 +102,20 @@ These run the graph viewer using `pythonw.exe` so the user only sees the graph w
 
 ---
 
-## Making Predictions
+## Model Evaluation and Predictions
 
-To make predictions with a trained model:
+To evaluate all 15 trained models and see their prediction precision on a sample task, run:
 
 ```bash
-python predict.py --model_path path/to/model --input_data path/to/input.npy
+python predict.py
 ```
+
+This will:
+- Load each of the 15 trained models (5 dataset sizes × 3 batch sizes)
+- Predict on a sample of 100 tasks from each dataset
+- Calculate the **Mean Absolute Percentage Error (MAPE)** for each model
+- Print the overall model precision percentage
+- Output the predicted duration (in days and hours) for a fixed sample task with defined properties
 
 ---
 
