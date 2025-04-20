@@ -1,10 +1,15 @@
 import csv
+import os
 import random
+import sys
+
 import numpy as np
 import time
 from tqdm import tqdm  # optional, install with: pip install tqdm
 
-import config
+from config import Config
+
+Config.load()
 
 start = time.time()
 
@@ -108,13 +113,17 @@ fieldnames = [
     "avg_experience", "juniors", "mediors", "seniors", "tech_leads", "predicted_duration_days"
 ]
 
-with open("realistic_tasks_large.csv", mode="w", newline="") as file:
+current_folder=sys.argv[1]
+
+# current_folder+"/"+"dataset.csv"
+
+with open(current_folder+"/"+"dataset.csv", mode="a", newline="") as file:
     writer = csv.DictWriter(file, fieldnames=fieldnames)
     writer.writeheader()
 
-    with tqdm(total=config.dataset_rows, desc="Generating tasks") as pbar:
+    with tqdm(total=Config.dataset_rows, desc="Generating tasks") as pbar:
         count = 0
-        while count < config.dataset_rows:
+        while count < Config.dataset_rows:
             task = random_task()
             if task:
                 writer.writerow(task)
@@ -122,4 +131,4 @@ with open("realistic_tasks_large.csv", mode="w", newline="") as file:
                 pbar.update(1)
 
 end = time.time()
-print(f"Saved realistic_tasks_large.csv with {config.dataset_rows:,} rows in {end - start:.2f} seconds.")
+print(f"Saved realistic_tasks_large.csv with {Config.dataset_rows:,} rows in {end - start:.2f} seconds.")
