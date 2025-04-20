@@ -11,9 +11,8 @@ class HuberLoss:
         squared_loss = 0.5 * error**2
         #sqrt_loss = self.delta * (np.abs(error) - 0.5 * self.delta)
         sqrt_loss=np.sqrt(np.abs(error))          #not linear, sqrt loss
-        root4=np.power(np.abs(error),(1/4))
         #sqrt_loss=np.power(np.abs(error),(1/2))
-        return np.mean(np.where(np.abs(error)<0.003,root4,np.where(is_small_error, squared_loss, sqrt_loss)))
+        return np.mean(np.where(is_small_error, squared_loss, sqrt_loss))
 
     def backward(self, y_pred, y_true):
         error = y_pred - y_true

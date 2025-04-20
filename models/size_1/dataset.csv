@@ -1,0 +1,101 @@
+task_type,complexity,assignee_level,tech_stack,task_priority,story_points,team_size,num_dependencies,estimated_hours,sprint_day,created_hour,remote_work,meetings_today,blocker_flag,avg_experience,juniors,mediors,seniors,tech_leads,predicted_duration_days
+Testing,High,Senior,JavaScript,Critical,3,5,0,6,7,13,True,1,False,2.55,2,3,0,0,1.28457525
+Refactoring,Low,Senior,Python,Medium,3,5,1,6,7,9,False,1,False,2.2,3,2,0,0,1.3167
+Code Review,High,Mid,JavaScript,High,7,3,2,14,6,11,True,2,False,5.0,1,0,1,1,2.7490428
+Design Review,High,Junior,Java,High,1,3,0,2,1,14,False,2,True,2.66666667,1,2,0,0,0.63162
+Bug Fix,Medium,Senior,Go,High,13,2,3,26,3,10,False,3,True,3.625,1,0,1,0,5.24953997
+Refactoring,Medium,Tech Lead,Python,Critical,8,3,0,16,2,12,False,0,False,5.58333333,0,1,1,1,2.12704
+Feature Dev,Medium,Tech Lead,Go,High,12,2,3,24,3,11,True,2,False,2.375,1,1,0,0,5.05368281
+Design Review,Medium,Tech Lead,JavaScript,Low,8,4,2,16,5,18,False,0,True,3.0625,3,0,0,1,3.80951484
+Feature Dev,Low,Senior,C++,Critical,10,2,0,20,10,14,False,2,False,2.375,1,1,0,0,3.1694375
+Design Review,Medium,Tech Lead,Go,Medium,11,3,0,22,5,13,True,2,True,4.16666667,1,1,0,1,4.50055375
+Documentation,High,Senior,Python,Medium,10,2,2,20,9,14,False,3,False,4.5,0,1,1,0,4.4135
+Refactoring,Low,Mid,JavaScript,Low,7,3,1,14,4,16,False,0,False,4.16666667,1,1,0,1,2.48788375
+Design Review,High,Mid,C++,High,5,5,0,10,8,11,False,1,False,3.45,2,2,0,1,1.90323
+Refactoring,High,Junior,Java,Low,12,5,3,24,6,13,True,3,True,3.55,2,1,2,0,6.90774725
+Deployment,Medium,Junior,JavaScript,High,7,2,1,14,8,11,False,1,True,1.5,2,0,0,0,3.0949875
+Deployment,High,Tech Lead,Other,Critical,11,2,0,22,8,16,True,0,False,3.25,0,2,0,0,4.23379688
+Refactoring,Medium,Tech Lead,C++,High,13,2,2,26,7,17,True,2,False,4.5,0,1,1,0,4.57179188
+Deployment,High,Mid,Python,Critical,10,3,0,20,2,9,False,2,False,5.0,1,0,1,1,3.19056
+Code Review,Low,Junior,C++,Low,8,2,0,16,6,16,False,3,True,2.375,1,1,0,0,3.77565375
+Code Review,High,Senior,Go,Low,12,4,1,24,5,14,True,1,False,5.625,0,1,2,1,5.04158078
+Client Meeting,Medium,Junior,Java,Medium,1,3,0,2,4,11,False,1,False,2.08333333,2,1,0,0,0.5
+Client Meeting,Medium,Tech Lead,Other,High,11,3,1,22,9,11,False,0,False,3.5,1,1,1,0,3.67423875
+Feature Dev,Medium,Junior,Other,Critical,1,3,2,2,8,11,True,3,True,5.0,1,0,1,1,0.7677285
+Documentation,High,Senior,Other,Medium,6,4,0,12,1,16,True,0,False,3.4375,1,2,1,0,2.60901506
+Deployment,High,Mid,Go,Medium,9,4,3,18,6,13,False,1,False,2.8125,1,3,0,0,4.49946875
+Bug Fix,Medium,Senior,JavaScript,Critical,4,4,2,8,5,11,True,0,False,1.9375,3,1,0,0,1.70104922
+Client Meeting,Medium,Tech Lead,Python,Low,8,4,2,16,2,9,False,1,False,2.5625,3,0,1,0,3.73316625
+Code Review,Low,Junior,JavaScript,Critical,6,2,0,12,6,13,False,2,True,1.5,2,0,0,0,2.261765
+Bug Fix,Medium,Mid,Go,Medium,11,3,0,22,9,17,True,3,False,4.16666667,1,1,0,1,4.18035625
+Code Review,Medium,Senior,Python,Low,7,5,1,14,6,14,True,2,True,2.55,2,3,0,0,3.89201794
+Design Review,High,Senior,JavaScript,High,4,5,0,8,4,13,False,1,True,3.95,2,1,1,1,1.59467418
+Refactoring,Low,Junior,C++,Low,4,5,2,8,10,13,True,0,False,3.45,2,2,0,1,1.77079691
+Deployment,Medium,Junior,Java,High,1,4,0,2,2,17,False,1,False,4.5,0,2,2,0,0.5
+Code Review,High,Junior,JavaScript,Medium,13,3,3,26,7,11,True,3,True,3.5,1,1,1,0,6.97445884
+Deployment,Medium,Mid,Java,Critical,9,3,2,18,8,17,False,0,True,2.08333333,2,1,0,0,3.63130625
+Feature Dev,High,Senior,Other,Medium,6,3,0,12,2,10,False,3,False,4.75,0,2,0,1,2.5072875
+Code Review,Medium,Junior,JavaScript,High,10,5,3,20,1,18,False,3,False,3.4,1,3,1,0,3.8564775
+Feature Dev,High,Senior,Java,Critical,13,5,3,26,4,10,False,3,False,2.55,2,3,0,0,5.56318625
+Design Review,Medium,Senior,JavaScript,High,1,3,1,2,5,9,True,1,True,6.41666667,0,0,2,1,0.51114814
+Design Review,Medium,Senior,Go,Critical,6,5,2,12,6,13,False,0,False,3.2,3,0,2,0,2.027862
+Feature Dev,Medium,Tech Lead,Other,Low,4,5,1,8,2,16,False,2,False,3.6,3,0,1,1,1.815528
+Client Meeting,Low,Tech Lead,Go,Critical,11,3,0,22,6,11,True,3,False,2.66666667,1,2,0,0,3.675315
+Testing,High,Senior,Java,Critical,10,3,1,20,5,10,False,2,True,4.91666667,0,1,2,0,3.71609906
+Testing,High,Junior,Java,Critical,1,3,0,2,9,17,True,0,False,3.5,1,1,1,0,0.5
+Bug Fix,Low,Senior,C++,High,12,5,2,24,6,14,True,0,False,2.2,3,2,0,0,4.322241
+Refactoring,Low,Tech Lead,C++,Low,12,3,3,24,7,18,False,3,False,3.58333333,2,0,0,1,4.87871313
+Feature Dev,Medium,Junior,JavaScript,Critical,6,2,1,12,7,10,True,2,False,5.75,0,0,2,0,1.96104563
+Feature Dev,High,Senior,Other,Critical,13,3,0,26,4,13,False,3,False,2.66666667,1,2,0,0,5.16006667
+Feature Dev,High,Senior,Java,Medium,1,3,0,2,4,14,False,2,True,4.33333333,1,0,2,0,0.602822
+Documentation,Medium,Junior,Other,Low,12,3,1,24,6,16,True,0,True,2.08333333,2,1,0,0,6.26277094
+Testing,Medium,Mid,Java,Critical,3,5,0,6,4,11,False,0,False,3.45,2,2,0,1,0.8987475
+Refactoring,High,Mid,Go,Low,2,5,2,4,6,13,False,2,False,3.05,2,2,1,0,1.43559515
+Feature Dev,Medium,Junior,JavaScript,Low,10,4,3,20,8,10,False,1,False,3.0625,3,0,0,1,4.50215391
+Documentation,High,Senior,Java,High,3,4,1,6,7,16,False,0,False,4.5625,1,1,1,1,1.10452613
+Feature Dev,High,Mid,Other,Medium,6,4,1,12,4,18,True,0,False,5.0,0,2,1,1,2.389401
+Bug Fix,High,Junior,C++,Medium,12,5,1,24,2,14,False,2,False,4.45,2,0,2,1,4.58432325
+Testing,Low,Mid,C++,Medium,13,2,3,26,5,16,False,3,False,3.25,0,2,0,0,5.090625
+Documentation,Medium,Mid,Go,Low,4,2,2,8,5,18,False,1,False,1.5,2,0,0,0,2.255
+Deployment,High,Mid,Other,Critical,8,5,2,16,5,15,True,3,False,3.05,2,2,1,0,3.51077459
+Deployment,High,Tech Lead,JavaScript,High,3,3,2,6,7,16,False,3,True,2.66666667,1,2,0,0,1.89486
+Testing,Low,Junior,Java,High,8,4,3,16,1,17,True,0,False,2.8125,1,3,0,0,3.01900922
+Client Meeting,Medium,Senior,Java,Critical,1,3,2,2,8,14,True,2,True,1.5,3,0,0,0,0.90566438
+Feature Dev,High,Mid,Go,High,5,5,1,10,5,15,True,2,False,3.9,1,2,2,0,2.13036548
+Design Review,High,Senior,C++,Critical,6,3,3,12,8,14,True,0,True,4.91666667,0,1,2,0,2.53032563
+Code Review,Medium,Mid,Java,Low,2,3,3,4,1,10,False,1,False,3.5,1,1,1,0,1.33241625
+Code Review,High,Senior,JavaScript,High,9,2,1,18,3,15,True,0,False,2.375,1,1,0,0,3.97803656
+Refactoring,High,Senior,JavaScript,Low,3,2,2,6,8,17,False,3,False,3.625,1,0,1,0,1.94100638
+Code Review,Low,Junior,Go,High,4,2,3,8,7,16,False,2,False,2.375,1,1,0,0,1.84573125
+Feature Dev,Medium,Mid,Python,Medium,9,5,3,18,8,9,True,0,False,2.35,4,0,1,0,4.05273881
+Bug Fix,Medium,Tech Lead,Java,Low,2,2,1,4,8,16,False,1,False,2.375,1,1,0,0,1.13334375
+Testing,High,Mid,Python,Critical,5,4,0,10,9,11,False,2,False,3.625,2,0,2,0,1.83520312
+Documentation,High,Mid,Other,Low,13,3,0,26,7,16,True,2,False,3.5,1,1,1,0,6.40448078
+Code Review,Medium,Mid,C++,Medium,10,3,3,20,10,15,False,1,False,2.66666667,1,2,0,0,4.39833333
+Testing,Medium,Junior,Python,Medium,3,2,0,6,4,16,True,2,False,1.5,2,0,0,0,1.50675
+Refactoring,High,Senior,Other,High,6,3,1,12,5,16,True,1,False,2.91666667,2,0,1,0,2.63265699
+Design Review,High,Junior,Java,Medium,13,5,3,26,8,17,False,0,False,3.05,2,2,1,0,5.90965225
+Deployment,Medium,Tech Lead,Go,High,8,2,3,16,6,9,True,1,True,3.625,1,0,1,0,3.47396027
+Bug Fix,High,Mid,Python,Critical,3,3,1,6,7,14,True,1,False,3.58333333,2,0,0,1,1.27262505
+Code Review,Low,Tech Lead,C++,Low,6,2,1,12,4,9,False,2,True,2.375,1,1,0,0,2.98015438
+Deployment,High,Senior,JavaScript,Medium,6,3,1,12,5,11,True,1,False,2.08333333,2,1,0,0,3.14733125
+Deployment,Medium,Junior,JavaScript,Low,1,4,2,2,5,10,False,1,False,3.0,2,1,1,0,0.81092
+Testing,Medium,Tech Lead,Go,Medium,8,5,3,16,7,10,True,0,True,2.55,2,3,0,0,4.09981688
+Client Meeting,Medium,Mid,Go,Low,9,2,0,18,7,13,False,0,False,2.375,1,1,0,0,3.88575
+Feature Dev,High,Tech Lead,Other,Medium,11,2,1,22,7,16,False,3,False,2.375,1,1,0,0,5.4066875
+Client Meeting,High,Tech Lead,JavaScript,High,6,2,1,12,10,14,True,2,False,3.625,1,0,1,0,2.6191555
+Code Review,Medium,Junior,Go,High,7,5,3,14,8,9,False,0,False,2.7,3,1,1,0,2.73794625
+Refactoring,Medium,Mid,Other,High,2,4,1,4,9,12,True,0,False,2.375,2,2,0,0,0.88091719
+Bug Fix,Medium,Tech Lead,Other,High,3,4,3,6,6,17,False,3,True,5.1875,1,0,2,1,1.46042325
+Documentation,Low,Senior,Other,Critical,12,2,1,24,3,15,False,0,False,2.375,1,1,0,0,3.72825938
+Feature Dev,High,Senior,Go,High,12,2,0,24,6,13,False,1,False,4.5,0,1,1,0,4.2929775
+Design Review,High,Senior,Other,Critical,11,3,3,22,4,15,False,1,False,3.5,1,1,1,0,4.27853662
+Testing,High,Tech Lead,Go,High,9,2,3,18,5,9,False,3,False,4.5,0,1,1,0,3.73534875
+Testing,Medium,Junior,Other,Low,13,2,3,26,5,13,False,2,True,4.5,0,1,1,0,6.00787688
+Refactoring,Medium,Junior,C++,Low,7,5,0,14,2,13,False,0,False,3.4,1,3,1,0,2.778468
+Code Review,Medium,Tech Lead,Go,Critical,12,5,2,24,2,12,False,0,False,3.4,1,3,1,0,3.9106035
+Bug Fix,High,Tech Lead,Go,Low,7,5,2,14,7,12,False,2,False,3.55,2,1,2,0,3.5483778
+Feature Dev,High,Tech Lead,JavaScript,Medium,3,5,3,6,10,11,False,2,False,3.4,1,3,1,0,1.831263
+Deployment,Medium,Mid,C++,Medium,3,5,0,6,7,10,False,3,True,3.45,2,2,0,1,1.45385625
+Design Review,Low,Senior,Python,Critical,9,5,1,18,8,10,False,3,False,2.2,3,2,0,0,3.105135
+Feature Dev,High,Mid,JavaScript,Medium,9,4,2,18,1,18,True,3,False,2.8125,1,3,0,0,4.77480938
