@@ -47,7 +47,7 @@ AiTaskOnly/
 ### Requirements
 
 - Python 3.11+
-- NumPy, Matplotlib, TQDM
+- NumPy, Matplotlib, TQDM, Pandas
 - No external ML frameworks used
 
 ### Installation
