@@ -65,7 +65,13 @@ pip install -r requirements.txt
 To train 15 models with combinations of 5 dataset sizes and 3 batch sizes:
 
 ```bash
-python research.py
+python research.py research
+```
+
+To clear all previously trained models and start fresh, run:
+
+```bash
+python research.py clean
 ```
 
 This will:
