@@ -117,7 +117,9 @@ current_folder=sys.argv[1]
 
 # current_folder+"/"+"dataset.csv"
 
-with open(current_folder+"/"+"dataset.csv", mode="a", newline="") as file:
+#with open(current_folder+"/"+"dataset.csv", mode="a", newline="") as file:
+with open("dataset.csv", mode="a", newline="") as file:
+
     writer = csv.DictWriter(file, fieldnames=fieldnames)
     writer.writeheader()
 
@@ -129,6 +131,21 @@ with open(current_folder+"/"+"dataset.csv", mode="a", newline="") as file:
                 writer.writerow(task)
                 count += 1
                 pbar.update(1)
+
+# with open(current_folder+"/"+"unseen_dataset.csv", mode="a", newline="") as file:
+with open("unseen_dataset.csv", mode="a", newline="") as file:
+
+    writer = csv.DictWriter(file, fieldnames=fieldnames)
+    writer.writeheader()
+    with tqdm(total=Config.dataset_rows, desc="Generating tasks") as pbar:
+        count = 0
+        while count < (Config.dataset_rows/5):       #20% of training
+            task = random_task()
+            if task:
+                writer.writerow(task)
+                count += 1
+                pbar.update(1)
+
 
 end = time.time()
 print(f"Saved realistic_tasks_large.csv with {Config.dataset_rows:,} rows in {end - start:.2f} seconds.")

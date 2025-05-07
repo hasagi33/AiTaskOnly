@@ -13,9 +13,10 @@ import os
 # === Load raw dataset ===
 current_folder=sys.argv[1]
 
-df = pd.read_csv(current_folder+"/"+"dataset.csv")
+# df = pd.read_csv(current_folder+"/"+"dataset.csv")
+df = pd.read_csv("dataset.csv")
 print("Starting preprocessing...")
-print(current_folder+"/"+"dataset.csv")
+print("dataset.csv")
 Config.load()
 
 # === Fill or drop missing values ===
@@ -72,12 +73,12 @@ denom[denom == 0] = 1e-6
 
 X_scaled = (X - scaler["min"]) / denom
 
-os.mkdir(current_folder+"/"+"processed")
+os.mkdir("processed")
 
 # === Save outputs ===
-np.save((current_folder+"/processed/X_scaled.npy"), X_scaled)
-np.save((current_folder+"/processed/y.npy"), y)
-with open((current_folder+"/processed/scaler.json"), "w") as f:
+np.save("processed/X_scaled.npy", X_scaled)
+np.save("processed/y.npy", y)
+with open("processed/scaler.json", "w") as f:
     json.dump(scaler, f)
 
 print("Preprocessing complete! Data saved to folder+/processed/")

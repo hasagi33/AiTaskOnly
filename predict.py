@@ -7,13 +7,14 @@ from config import Config
 model = TaskDurationModel()
 Config.load()
 
-dataset_size=100
-for i in range(5):
+dataset_size=Config.dataset_rows/5
+for i in range(1):
 
-    for j in range(3):
-        model.load(f"models/size_{i+1}/model_{j}/model_weights.npz")
+    for j in range(1):
+        print(i,j)
+        model.load(f"models/size_{i+1}/model_{j+1}/model_weights.npz")
         # === Load test dataset ===
-        test_df = pd.read_csv(f"models/size_{i+1}/dataset.csv").sample(dataset_size)
+        test_df = pd.read_csv(f"unseen_dataset.csv").sample(dataset_size)
 
         # === Predict and Evaluate ===
         predictions = []
@@ -22,7 +23,7 @@ for i in range(5):
         for _, row in test_df.iterrows():
             task_data = row.to_dict()
             actual_duration = task_data.pop("predicted_duration_days")
-            pred_duration = model.predict(task_data, scaler_path=f"models/size_{i+1}/processed/scaler.json")
+            pred_duration = model.predict(task_data, scaler_path=f"processed/scaler.json")
 
             predictions.append(pred_duration)
             actuals.append(actual_duration)
@@ -59,7 +60,7 @@ for i in range(5):
             "tech_leads": 0
         }
 
-        prediction = model.predict(test_task, scaler_path=f"models/size_{i+1}/processed/scaler.json")
+        prediction = model.predict(test_task, scaler_path=f"processed/scaler.json")
         days = int(prediction)
         hours = round((prediction - days) * 24,8)
         while(hours >=24):

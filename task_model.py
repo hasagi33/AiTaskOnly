@@ -1,10 +1,12 @@
-import sys
 from activations import Activation_ReLU
 from dense_layer import Layer_Dense
 from losses import HuberLoss
 from task_input import encode_task
 import numpy as np
 import os
+import json
+import sys
+
 
 class TaskDurationModel:
     def __init__(self, input_size=45):
@@ -65,8 +67,6 @@ class TaskDurationModel:
 
 
     def predict(self, task_dict, scaler_path="processed/scaler.json"):
-        import json
-        import sys
 
         if hasattr(sys, "_MEIPASS"):
             scaler_path = os.path.join(sys._MEIPASS, scaler_path)

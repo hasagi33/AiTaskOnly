@@ -65,7 +65,7 @@ def clean_directories():
             paths.append(str(item))
 
     Config.batch_size=16
-    Config.dataset_rows=100
+    Config.dataset_rows=2000
     Config.iteration_number=1
     Config.model_number=1
     Config.current_folder=""
@@ -101,7 +101,7 @@ def main():
 
         Config.save()
 
-        for i in range(5):
+        for i in range(1):
 
             Config.current_folder = base_folder / f"size_{Config.iteration_number}"
             os.makedirs(Config.current_folder, exist_ok=True)
@@ -111,16 +111,11 @@ def main():
 
             run_command(f"{python_cmd} dataset_generator.py {Config.current_folder}", "Dataset Generation")
             run_command(f"{python_cmd} preprocess_dataset.py {Config.current_folder}", "Data Preprocessing")
-            for j in range(3):
+            for j in range(1):
                 print(f"Starting training {Config.model_number}:")
                 run_command(f"{python_cmd} train_model.py {Config.current_folder}", "Model Training")
                 Config.model_number+=1
-                Config.batch_size*=16
                 Config.save()
-            Config.batch_size=16
-            Config.dataset_rows*=10
-            Config.iteration_number+=1
-            Config.model_number=0
             Config.save()
     # elif num1!="old":            #optional skip the dataset generation
     #     # Step 1: Clean up
@@ -134,6 +129,7 @@ def main():
     elif num1=="clean":
         clean_directories()
         return
+
 
     print("\n✨ Retraining process completed successfully!")
     print("You can now use the new model for predictions.")

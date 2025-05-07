@@ -2,6 +2,7 @@ import numpy as np
 from matplotlib.ticker import ScalarFormatter
 import pickle
 
+import stopping
 from config import Config
 from task_model import TaskDurationModel
 import matplotlib.pyplot as plt
@@ -9,21 +10,21 @@ import os
 
 # === Load preprocessed data ===
 Config.load()
-X = np.load(f"models/size_{Config.iteration_number}/processed/X_scaled.npy")
-y = np.load(f"models/size_{Config.iteration_number}/processed/y.npy")
+X = np.load("processed/X_scaled.npy")
+y = np.load("processed/y.npy")
 
 # === Initialize model ===
 model = TaskDurationModel(input_size=X.shape[1])
 print(f"Training on {X.shape[0]} samples, input dim = {X.shape[1]}")
 
-Config.load()   # Load json file with variables
+Config.load()  # Load json file with variables
 
-epochs=Config.epochs
-batch_size=Config.batch_size
-learning_rate=Config.LEARNING_RATE
-
+epochs = Config.epochs
+batch_size = Config.batch_size
+learning_rate = Config.LEARNING_RATE
 
 loss_history = []
+early_stopper = stopping.stopping(patience=5, min_delta=0.0001)
 
 # === Training loop ===
 for epoch in range(epochs):
@@ -36,8 +37,8 @@ for epoch in range(epochs):
 
     # Train in batches
     for i in range(0, len(X), batch_size):
-        xb = X_shuffled[i:i+batch_size]
-        yb = y_shuffled[i:i+batch_size]
+        xb = X_shuffled[i:i + batch_size]
+        yb = y_shuffled[i:i + batch_size]
 
         for xi, yi in zip(xb, yb):
             loss = model.train_on_vector(X_input=xi.reshape(1, -1), true_duration=yi, learning_rate=learning_rate)
@@ -45,6 +46,10 @@ for epoch in range(epochs):
 
     avg_loss = total_loss / len(X)
     loss_history.append(avg_loss)
+    early_stopper(avg_loss)
+    if early_stopper.early_stop:
+        print(f"Early stopping at epoch {epoch}. No improvement in {early_stopper.patience} epochs.")
+        break
 
     if epoch % 1 == 0 or epoch == epochs - 1:
         print(f"Epoch {epoch}: Avg Loss = {avg_loss:.4f}")
@@ -53,10 +58,10 @@ for epoch in range(epochs):
 model.save(f"models/size_{Config.iteration_number}/model_{Config.model_number}/model_weights.npz")
 print("Model training complete and saved to models/model_weights.npz")
 
-output_dir=f"models/size_{Config.iteration_number}/pickle_loss"
+output_dir = f"models/size_{Config.iteration_number}/pickle_loss"
 os.makedirs(output_dir, exist_ok=True)
 # === Plot loss curve with log Y axis and normal tick format ===
-fig=plt.figure(figsize=(10, 5))
+fig = plt.figure(figsize=(10, 5))
 plt.plot(loss_history, label="Avg Loss")
 plt.title("Training Loss Over Epochs")
 plt.xlabel("Epoch")
@@ -75,8 +80,8 @@ plt.tight_layout()
 fig_filename = os.path.join(output_dir, f"loss_plot_{Config.model_number}.fig.pickle")
 with open(fig_filename, "wb") as f:
     pickle.dump(fig, f)
-    
-viewer_code=f"""
+
+viewer_code = f"""
 import pickle
 import matplotlib.pyplot as plt
 import os
@@ -101,18 +106,17 @@ else:
     print(f"File not found: {{fig_path}}")
 """
 
-viewer_py_path=os.path.join(output_dir, f"view_loss_plot_{Config.model_number}.py")
+viewer_py_path = os.path.join(output_dir, f"view_loss_plot_{Config.model_number}.py")
 with open(viewer_py_path, "w") as f:
     f.write(viewer_code.strip())
 
-batch_code=f"""
+batch_code = f"""
 @echo off
 start "" "pythonw.exe" "%~dp0../pickle_loss/view_loss_plot_{Config.model_number}.py
 exit
 """
 os.makedirs(f"models/size_{Config.iteration_number}/batches", exist_ok=True)
-batch_path= os.path.join(f"models/size_{Config.iteration_number}/batches", f"loss_plot_batch_{Config.model_number}.bat")
+batch_path = os.path.join(f"models/size_{Config.iteration_number}/batches",
+                          f"loss_plot_batch_{Config.model_number}.bat")
 with open(batch_path, "w") as f:
     f.write(batch_code)
-
-
