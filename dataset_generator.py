@@ -17,7 +17,7 @@ TASK_TYPES = [
     "Code Review", "Bug Fix", "Feature Dev", "Testing", "Documentation",
     "Design Review", "Client Meeting", "Deployment", "Refactoring"
 ]
-COMPLEXITIES = ["Low", "Medium", "High"]
+COMPLEXITIES = ["VeryLow","Low", "Medium", "High","VeryHigh"]
 ASSIGNEE_LEVELS = ["Junior", "Mid", "Senior", "Tech Lead"]
 TECH_STACKS = ["Python", "Java", "JavaScript", "C++", "Go", "Other"]
 PRIORITY_LEVELS = ["Low", "Medium", "High", "Critical"]
@@ -62,17 +62,19 @@ def random_task():
     # Base duration and modifiers
     story_point_factor = 0.4
     base = story_points * story_point_factor
-    complexity_multiplier = {"Low": 0.9, "Medium": 1.0, "High": 1.15}[complexity]
+    complexity_multiplier = {"VeryLow":0.5,"Low": 0.8, "Medium": 1.0, "High": 1.25,"VeryHigh":1.5}[complexity]               #higher discrepancy
     priority_factor = {"Low": 1.1, "Medium": 1.0, "High": 0.9, "Critical": 0.85}[task_priority]
 
     duration = base * complexity_multiplier
-    duration += deps * 0.15
-    duration += meetings * 0.1
-
+    # duration += deps * 0.15
+    duration=duration*(1+deps**1.7*0.05)        #duration+duration*(deps¹·⁷*1/20)     deps=3 => duration=duration*1.32
+    # duration += meetings * 0.1
+    duration+=meetings**2*0.05                   #meetings=3 =>duration+=0.45
     team_factor = 1 - (0.03 * counts.get("Senior", 0) + 0.05 * counts.get("Tech Lead", 0))
     duration *= team_factor
 
-    exp_factor = np.clip(1.1 - avg_exp * 0.05, 0.85, 1.1)
+    # exp_factor = np.clip(1.1 - avg_exp * 0.05, 0.85, 1.1)
+    exp_factor = 1.1 - avg_exp * 0.05
     duration *= exp_factor
 
     if blockers:
@@ -81,7 +83,19 @@ def random_task():
         duration *= 1.05
 
     duration *= priority_factor
-    duration = round(np.clip(duration, 0.5, 8.0), 8)
+    # duration = round(np.clip(duration, 0.5, 8.0), 8)
+
+    if all(role == "Junior" for role in team_roles):
+        if complexity_multiplier==1.0:
+            duration *= 1.1
+        if complexity_multiplier == 1.25:
+            duration *= 1.2
+        if complexity_multiplier == 1.5:
+            duration *= 1.4
+    elif all((role == "Junior" or role== "Med")for role in team_roles):
+        if complexity_multiplier==1.5:
+            duration*=1.15
+
 
     return {
         "task_type": task_type,
@@ -113,7 +127,7 @@ fieldnames = [
     "avg_experience", "juniors", "mediors", "seniors", "tech_leads", "predicted_duration_days"
 ]
 
-current_folder=sys.argv[1]
+# current_folder=sys.argv[1]
 
 # current_folder+"/"+"dataset.csv"
 
