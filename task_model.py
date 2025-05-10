@@ -9,7 +9,7 @@ import sys
 
 
 class TaskDurationModel:
-    def __init__(self, input_size=45):
+    def __init__(self, input_size=47):
         # Define layers
         self.layer1 = Layer_Dense(input_size, 64)
         self.activation1 = Activation_ReLU()

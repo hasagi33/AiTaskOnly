@@ -24,7 +24,7 @@ batch_size = Config.batch_size
 learning_rate = Config.LEARNING_RATE
 
 loss_history = []
-early_stopper = stopping.stopping(patience=5, min_delta=0.0001)
+early_stopper = stopping.stopping(patience=50, min_delta=0.0001)
 
 # === Training loop ===
 for epoch in range(epochs):

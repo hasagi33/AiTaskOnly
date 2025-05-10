@@ -2,16 +2,22 @@ import sys
 
 import pandas as pd
 import numpy as np
-
+import shutil
 import config
 from config import Config
 from task_input import encode_task
 import json
 import os
 
+def remove_existing_preprocessed():
+    if os.path.isdir("processed"):
+        shutil.rmtree("processed")
+
+
+remove_existing_preprocessed()
 
 # === Load raw dataset ===
-current_folder=sys.argv[1]
+# current_folder=sys.argv[1]
 
 # df = pd.read_csv(current_folder+"/"+"dataset.csv")
 df = pd.read_csv("dataset.csv")
@@ -45,7 +51,7 @@ for _, row in df.iterrows():
     try:
         task = row.drop(["Unnamed: 0", "predicted_duration_days"], errors="ignore").to_dict()
         features = encode_task(task)
-        if features.shape[1] != 45:
+        if features.shape[1] != 47:
             print(f"Feature vector length mismatch: {features.shape[1]}")
             bad_rows += 1
             continue

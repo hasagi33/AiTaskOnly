@@ -22,6 +22,16 @@ ASSIGNEE_LEVELS = ["Junior", "Mid", "Senior", "Tech Lead"]
 TECH_STACKS = ["Python", "Java", "JavaScript", "C++", "Go", "Other"]
 PRIORITY_LEVELS = ["Low", "Medium", "High", "Critical"]
 
+def remove_existing_csv():
+    if os.path.exists("dataset.csv"):
+        os.remove("dataset.csv")
+    if os.path.exists("unseen_dataset.csv"):
+        os.remove("unseen_dataset.csv")
+
+remove_existing_csv()
+
+
+
 def random_task():
     task_type = random.choice(TASK_TYPES)
     complexity = random.choice(COMPLEXITIES)
@@ -119,6 +129,7 @@ def random_task():
         "tech_leads": counts.get("Tech Lead", 0),
         "predicted_duration_days": duration
     }
+
 
 fieldnames = [
     "task_type", "complexity", "assignee_level", "tech_stack", "task_priority",

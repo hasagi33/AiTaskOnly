@@ -6,7 +6,7 @@ TASK_TYPES = [
     "Design Review", "Client Meeting", "Deployment", "Refactoring"
 ]
 
-COMPLEXITIES = ["Low", "Medium", "High"]
+COMPLEXITIES = ["VeryLow", "Low", "Medium", "High", "VeryHigh"]
 ASSIGNEE_LEVELS = ["Junior", "Mid", "Senior", "Tech Lead"]
 TECH_STACKS = ["Python", "Java", "JavaScript", "C++", "Go", "Other"]
 PRIORITY_LEVELS = ["Low", "Medium", "High", "Critical"]
@@ -15,7 +15,7 @@ def encode_task(task):
     """
     Converts a detailed task dictionary into a numerical feature vector.
     Includes role breakdown and experience for team optimization.
-    Total vector length = 45.
+    Total vector length = 47.
     """
     input_vector = []
 

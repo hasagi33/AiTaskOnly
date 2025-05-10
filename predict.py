@@ -7,11 +7,10 @@ from config import Config
 model = TaskDurationModel()
 Config.load()
 
-dataset_size=Config.dataset_rows/5
+dataset_size=int(Config.dataset_rows/5)
 for i in range(1):
 
     for j in range(1):
-        print(i,j)
         model.load(f"models/size_{i+1}/model_{j+1}/model_weights.npz")
         # === Load test dataset ===
         test_df = pd.read_csv(f"unseen_dataset.csv").sample(dataset_size)
@@ -38,35 +37,34 @@ for i in range(1):
 
 
         # === Example task prediction ===
-        test_task = {
-            "task_type": "Feature Dev",
-            "complexity": "High",
-            "assignee_level": "Mid",
-            "tech_stack": "Python",
-            "task_priority": "Critical",
-            "story_points": 8,
-            "team_size": 4,
-            "num_dependencies": 2,
-            "estimated_hours": 24,
-            "sprint_day": 4,
-            "created_hour": 13,
-            "remote_work": True,
-            "meetings_today": 1,
-            "blocker_flag": False,
-            "avg_experience": 3.5,
-            "juniors": 4,
-            "mediors": 0,
-            "seniors": 0,
-            "tech_leads": 0
-        }
+        # test_task = {
+        #     "task_type": "Feature Dev",
+        #     "complexity": "High",
+        #     "assignee_level": "Mid",
+        #     "tech_stack": "Python",
+        #     "task_priority": "Critical",
+        #     "story_points": 8,
+        #     "team_size": 4,
+        #     "num_dependencies": 2,
+        #     "estimated_hours": 24,
+        #     "sprint_day": 4,
+        #     "created_hour": 13,
+        #     "remote_work": True,
+        #     "meetings_today": 1,
+        #     "blocker_flag": False,
+        #     "avg_experience": 3.5,
+        #     "juniors": 4,
+        #     "mediors": 0,
+        #     "seniors": 0,
+        #     "tech_leads": 0
+        # }
 
-        prediction = model.predict(test_task, scaler_path=f"processed/scaler.json")
-        days = int(prediction)
-        hours = round((prediction - days) * 24,8)
-        while(hours >=24):
-            days+=1
-            hours-=24
-
+        # prediction = model.predict(test_task, scaler_path=f"processed/scaler.json")
+        # days = int(prediction)
+        # hours = round((prediction - days) * 24,8)
+        # while(hours >=24):
+        #     days+=1
+        #     hours-=24
+        #
         print(f"Model Precision: {round(precision_percentage,8)}%")
-        print(f"Predicted Duration for example task for size {dataset_size}: {days} days and {hours} hours")
-    dataset_size*=10
+        # print(f"Predicted Duration for example task for size {dataset_size}: {days} days and {hours} hours")

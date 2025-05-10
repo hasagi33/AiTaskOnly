@@ -17,7 +17,9 @@ class HuberLoss:
     def backward(self, y_pred, y_true):
         error = y_pred - y_true
         is_small_error = (np.abs(error) <= self.delta)
-        dloss = np.where(is_small_error, error, self.delta * np.sign(error))
-        self.dinputs = dloss / y_true.shape[0]  # Average over batch
+        grad_small = error
+        grad_large = 0.5 * np.sign(error) / np.sqrt(np.abs(error) + 1e-6)
+        dloss = np.where(is_small_error, grad_small, grad_large)
+        self.dinputs = dloss / y_true.shape[0]
 
 

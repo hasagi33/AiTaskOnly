@@ -65,7 +65,7 @@ def clean_directories():
             paths.append(str(item))
 
     Config.batch_size=16
-    Config.dataset_rows=2000
+    Config.dataset_rows=20000
     Config.iteration_number=1
     Config.model_number=1
     Config.current_folder=""
