@@ -9,7 +9,7 @@ import platform
 
 from config import Config
 
-Config.load()
+# Config.load()
 
 def get_python_command():
     """Determine the best Python command to use based on the platform"""
@@ -56,7 +56,7 @@ def clean_directories():
     """Remove contents of models folder and other generated data"""
     print("\n🗑️  Cleaning up previous files...")
 
-    paths = ["./processed", "./realistic_tasks_large.csv", "./models"]
+    paths = ["./processed", "./realistic_tasks_large.csv", "./models","config_data.json"]
 
     # Add all contents inside ./models to be deleted
     models_path = Path("./models")
@@ -64,12 +64,10 @@ def clean_directories():
         for item in models_path.iterdir():
             paths.append(str(item))
 
-    Config.batch_size=16
-    Config.dataset_rows=20000
-    Config.iteration_number=1
-    Config.model_number=1
-    Config.current_folder=""
     Config.save()
+    Config.load()
+
+    print("Config settings",Config.LEARNING_RATE)
     # Delete all paths
     for path in paths:
         if os.path.exists(path):
@@ -83,24 +81,22 @@ def clean_directories():
     # Optionally recreate the empty ./models folder
     if not models_path.exists():
         os.makedirs(models_path)
-        print("🆕 Recreated empty './models' directory.")
+        print("Recreated empty './models' directory.")
 
 def main():
     """Main function to orchestrate the retraining process"""
     print("\n🚀 Starting complete model retraining process")
-    
     # Get the appropriate Python command for this system
     python_cmd = get_python_command()
     original_folder = Config.current_folder
     num1 = sys.argv[1]
+    losses_list=["CustomHuberLoss"]
 
     if num1=="research":
         clean_directories()
         base_folder = Path("models")
         os.makedirs(base_folder, exist_ok=True)
-
         Config.save()
-
         for i in range(1):
 
             Config.current_folder = base_folder / f"size_{Config.iteration_number}"
@@ -111,21 +107,18 @@ def main():
 
             run_command(f"{python_cmd} dataset_generator.py {Config.current_folder}", "Dataset Generation")
             run_command(f"{python_cmd} preprocess_dataset.py {Config.current_folder}", "Data Preprocessing")
-            for j in range(1):
+            for index,loss in enumerate(losses_list):
+                Config.current_loss=loss
+                print(loss,"lossiram")
+                #Config.save()
+                #Config.load()
                 print(f"Starting training {Config.model_number}:")
                 run_command(f"{python_cmd} train_model.py {Config.current_folder}", "Model Training")
-                Config.model_number+=1
+                shutil.copy("config_data.json",f"models/size_{i+1}/model_{index+1}/config.json")
+                Config.model_number += 1
                 Config.save()
             Config.save()
-    # elif num1!="old":            #optional skip the dataset generation
-    #     # Step 1: Clean up
-    #     clean_directories()
-    #     # Step 2: Generate dataset
-    #     run_command(f"{python_cmd} dataset_generator.py", "Dataset Generation")
-    #     # Step 3: Preprocess dataset
-    #     run_command(f"{python_cmd} preprocess_dataset.py", "Data Preprocessing")
-    #     # Step 4: Train model
-    #     run_command(f"{python_cmd} train_model.py", "Model Training")
+
     elif num1=="clean":
         clean_directories()
         return

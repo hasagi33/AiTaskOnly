@@ -28,7 +28,7 @@ AiTaskOnly/
 ├── config_data.json              # Stores run settings
 ├── dataset_generator.py          # Generates synthetic task datasets
 ├── dense_layer.py                # Implementation of dense layers
-├── losses.py                     # Loss functions
+├── CustomHuberLoss.py                     # Loss functions
 ├── predict.py                    # Make predictions from trained models
 ├── preprocess_dataset.py         # Preprocessing utilities
 ├── research.py                   # Main driver script - trains all 15 models

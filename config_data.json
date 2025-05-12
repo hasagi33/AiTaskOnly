@@ -1,9 +1,0 @@
-{
-  "iteration_number": 1,
-  "model_number": 2,
-  "batch_size": 16,
-  "epochs": 50,
-  "dataset_rows": 20000,
-  "LEARNING_RATE": 0.0001,
-  "current_folder": "models/size_1"
-}
