@@ -23,12 +23,16 @@ epochs = Config.epochs
 batch_size = Config.batch_size
 learning_rate = Config.LEARNING_RATE
 
+early_stopper = stopping.stopping(patience=50, min_delta=0.0001)        #placeholder of 50 while testing
+
+precision_history = []
 loss_history = []
-early_stopper = stopping.stopping(patience=50, min_delta=0.0001)
 
 # === Training loop ===
 for epoch in range(epochs):
     total_loss = 0
+    predictions = []
+    actuals = []
 
     # Shuffle data each epoch
     indices = np.random.permutation(len(X))
@@ -44,15 +48,30 @@ for epoch in range(epochs):
             loss = model.train_on_vector(X_input=xi.reshape(1, -1), true_duration=yi, learning_rate=learning_rate)
             total_loss += loss
 
+            # === Predict for precision ===
+            y_pred = model.forward(xi.reshape(1, -1))[0][0]
+            predictions.append(y_pred)
+            actuals.append(yi)
+
+    # === Calculate metrics after the epoch ===
+    predictions = np.array(predictions)
+    actuals = np.array(actuals)
+
     avg_loss = total_loss / len(X)
     loss_history.append(avg_loss)
+
+    mape = np.mean(np.abs((actuals - predictions) / actuals))
+    precision_percentage = (1 - mape) * 100
+    precision_history.append(precision_percentage)
+
     early_stopper(avg_loss)
     if early_stopper.early_stop:
         print(f"Early stopping at epoch {epoch}. No improvement in {early_stopper.patience} epochs.")
         break
 
-    if epoch % 1 == 0 or epoch == epochs - 1:
-        print(f"Epoch {epoch}: Avg Loss = {avg_loss:.4f}")
+    # === Print loss and precision
+    print(f"Epoch {epoch}: Avg Loss = {avg_loss:.4f}, Precision = {precision_percentage:.2f}%")
+
 
 # === Save trained model ===
 model.save(f"models/size_{Config.iteration_number}/model_{Config.model_number}/model_weights.npz")
@@ -60,26 +79,22 @@ print("Model training complete and saved to models/model_weights.npz")
 
 output_dir = f"models/size_{Config.iteration_number}/pickle_loss"
 os.makedirs(output_dir, exist_ok=True)
-# === Plot loss curve with log Y axis and normal tick format ===
+# === Plot precision curve ===
 fig = plt.figure(figsize=(10, 5))
-plt.plot(loss_history, label="Avg Loss")
-plt.title("Training Loss Over Epochs")
+plt.plot(precision_history, label="Precision (%)", color='green')
+plt.title("Model Precision Over Epochs")
 plt.xlabel("Epoch")
-plt.ylabel("Loss")
-plt.yscale('log')
-
-# Set Y-axis to show plain numbers (no scientific notation)
-plt.gca().yaxis.set_major_formatter(ScalarFormatter())
-plt.gca().yaxis.set_minor_formatter(ScalarFormatter())
-plt.ticklabel_format(style='plain', axis='y')
-
-plt.grid(True, which="both", linestyle="--", linewidth=0.5)
+plt.ylabel("Precision (%)")
+plt.grid(True, linestyle="--", linewidth=0.5)
 plt.legend()
 plt.tight_layout()
 
-fig_filename = os.path.join(output_dir, f"loss_plot_{Config.model_number}.fig.pickle")
+# Save figure and viewer like before
+fig_filename = os.path.join(output_dir, f"precision_plot_{Config.model_number}.fig.pickle")
 with open(fig_filename, "wb") as f:
     pickle.dump(fig, f)
+
+# Replace 'loss_plot' with 'precision_plot' in viewer and batch script generation...
 
 viewer_code = f"""
 import pickle
@@ -120,3 +135,24 @@ batch_path = os.path.join(f"models/size_{Config.iteration_number}/batches",
                           f"loss_plot_batch_{Config.model_number}.bat")
 with open(batch_path, "w") as f:
     f.write(batch_code)
+
+# viewer_py_path = os.path.join(output_dir, f"view_loss_plot_shell_{Config.model_number}.py")
+# with open(viewer_py_path, "w") as f:
+#     f.write(viewer_code.strip())
+
+# === Create Ubuntu-compatible shell script to show the precision plot
+bash_script_path = os.path.join(
+    f"models/size_{Config.iteration_number}/batches",
+    f"show_precision_plot_{Config.model_number}.sh"
+)
+
+bash_script_code = f"""#!/bin/bash
+cd "$(dirname "$0")/../pickle_loss"
+python3 view_loss_plot_{Config.model_number}.py
+"""
+
+with open(bash_script_path, "w") as f:
+    f.write(bash_script_code.strip())
+
+# Make script executable
+os.chmod(bash_script_path, 0o755)

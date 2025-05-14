@@ -11,6 +11,7 @@ from config import Config
 
 # Config.load()
 
+
 def get_python_command():
     """Determine the best Python command to use based on the platform"""
     # Try different Python commands and use the first one that works
@@ -64,6 +65,9 @@ def clean_directories():
         for item in models_path.iterdir():
             paths.append(str(item))
 
+    Config.current_layers=1
+    Config.current_loss=1
+
     Config.save()
     Config.load()
 
@@ -85,38 +89,44 @@ def clean_directories():
 
 def main():
     """Main function to orchestrate the retraining process"""
-    print("\n🚀 Starting complete model retraining process")
+    print("\nStarting complete model retraining process")
     # Get the appropriate Python command for this system
     python_cmd = get_python_command()
     original_folder = Config.current_folder
     num1 = sys.argv[1]
     losses_list=["CustomHuberLoss"]
+    layers_list=["3hidden"]
 
     if num1=="research":
         clean_directories()
+
         base_folder = Path("models")
         os.makedirs(base_folder, exist_ok=True)
         Config.save()
-        for i in range(1):
-
+        for i,layer in enumerate(layers_list):
             Config.current_folder = base_folder / f"size_{Config.iteration_number}"
             os.makedirs(Config.current_folder, exist_ok=True)
 
-            print(Config.current_folder)
-            print(Config.current_folder)
-
             run_command(f"{python_cmd} dataset_generator.py {Config.current_folder}", "Dataset Generation")
             run_command(f"{python_cmd} preprocess_dataset.py {Config.current_folder}", "Data Preprocessing")
+
+            if layer == "3hidden":
+                print("Layer layout of 3 hidden, funneling down")
+                Config.layers_description="1st layer: 64, 2nd layer=32, 3rd layer=16"
+                Config.save()
+
             for index,loss in enumerate(losses_list):
-                Config.current_loss=loss
-                print(loss,"lossiram")
-                #Config.save()
-                #Config.load()
-                print(f"Starting training {Config.model_number}:")
+                if loss == "CustomHuberLoss":
+                    Config.loss_description="A custom version loss, designed to punish large errors and soften on smaller errors"
+                    Config.save()
+                # Config.current_loss=loss
+                print(f"Starting training {Config.model_number}: with:",loss," and layers:",layer)
                 run_command(f"{python_cmd} train_model.py {Config.current_folder}", "Model Training")
                 shutil.copy("config_data.json",f"models/size_{i+1}/model_{index+1}/config.json")
                 Config.model_number += 1
+                Config.current_loss+=1
                 Config.save()
+            Config.current_layers+=1
             Config.save()
 
     elif num1=="clean":
@@ -124,7 +134,7 @@ def main():
         return
 
 
-    print("\n✨ Retraining process completed successfully!")
+    print("\nRetraining process completed successfully!")
     print("You can now use the new model for predictions.")
 
 if __name__ == "__main__":

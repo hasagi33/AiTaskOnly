@@ -30,6 +30,7 @@ class TaskDurationModel:
     def forward(self, X):
         match Config.current_layers:
             case 1:
+
                 self.layer1.forward(X)
                 self.activation1.forward(self.layer1.output)
 
@@ -77,7 +78,6 @@ class TaskDurationModel:
 
 
     def predict(self, task_dict, scaler_path="processed/scaler.json"):
-
         if hasattr(sys, "_MEIPASS"):
             scaler_path = os.path.join(sys._MEIPASS, scaler_path)
 
@@ -92,8 +92,8 @@ class TaskDurationModel:
         denom[denom == 0] = 1e-6
 
         X_scaled = (X_input - min_vals) / denom
-
         y_pred = self.forward(X_scaled)
+
         return y_pred[0][0]
 
     def save(self, path="models/model_weights.npz"):

@@ -9,12 +9,14 @@ class Config:
     iteration_number = 1
     model_number = 1
     batch_size = 16
-    epochs = 50
+    epochs = 5
     dataset_rows = 5000
     LEARNING_RATE = 0.0001
     current_folder = ""
     current_loss=1
     current_layers=1
+    loss_description= ""
+    layers_description=""
 
     @classmethod
     def load(cls):
@@ -30,6 +32,8 @@ class Config:
                 cls.current_folder = data.get("current_folder", cls.current_folder)
                 cls.current_loss = data.get("current_loss", cls.current_loss)
                 cls.current_layers = data.get("current_layers", cls.current_layers)
+                cls.loss_description = data.get("loss_description", cls.loss_description)
+                cls.layers_description=data.get("layers_description", cls.layers_description)
 
     @classmethod
     def save(cls):
@@ -44,4 +48,6 @@ class Config:
                 "current_folder": str(cls.current_folder),
                 "current_loss": cls.current_loss,
                 "current_layers": cls.current_layers,
+                "loss_description": cls.loss_description,
+                "layers_description": cls.layers_description,
             }, f, indent=2)
