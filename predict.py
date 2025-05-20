@@ -8,9 +8,9 @@ import json
 model = TaskDurationModel()
 Config.load()
 
-dataset_size=int(Config.dataset_rows/5)
-for i in range(1):
+dataset_size=int(Config.dataset_rows)
 
+for i in range(1):
     for j in range(1):
         with open(f"models/size_{i+1}/model_{j+1}/config.json", "r") as file:
             text = json.load(file)
@@ -28,7 +28,7 @@ for i in range(1):
 
         # config_of_model=
         # === Load test dataset ===
-        test_df = pd.read_csv(f"unseen_dataset.csv").sample(dataset_size)
+        test_df = pd.read_csv(f"dataset.csv").sample(dataset_size)
 
         # === Predict and Evaluate ===
         predictions = []
@@ -50,4 +50,5 @@ for i in range(1):
 
 
         print(f"Model Precision: {round(precision_percentage,8)}%")
+
         # print(f"Predicted Duration for example task for size {dataset_size}: {days} days and {hours} hours")

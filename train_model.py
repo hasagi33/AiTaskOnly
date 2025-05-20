@@ -1,4 +1,5 @@
 import numpy as np
+import pandas as pd
 from matplotlib.ticker import ScalarFormatter
 import pickle
 
@@ -28,6 +29,9 @@ early_stopper = stopping.stopping(patience=50, min_delta=0.0001)        #placeho
 precision_history = []
 loss_history = []
 
+dataset_size=int(Config.dataset_rows/5)
+test_df = pd.read_csv(f"unseen_dataset.csv").sample(dataset_size)
+
 # === Training loop ===
 for epoch in range(epochs):
     total_loss = 0
@@ -48,21 +52,28 @@ for epoch in range(epochs):
             loss = model.train_on_vector(X_input=xi.reshape(1, -1), true_duration=yi, learning_rate=learning_rate)
             total_loss += loss
 
-            # === Predict for precision ===
-            y_pred = model.forward(xi.reshape(1, -1))[0][0]
-            predictions.append(y_pred)
-            actuals.append(yi)
-
-    # === Calculate metrics after the epoch ===
-    predictions = np.array(predictions)
-    actuals = np.array(actuals)
 
     avg_loss = total_loss / len(X)
     loss_history.append(avg_loss)
 
+    # === Predict and Evaluate ===
+    predictions = []
+    actuals = []
+
+    #code from precict.py
+    for _, row in test_df.iterrows():
+        task_data = row.to_dict()
+        actual_duration = task_data.pop("predicted_duration_days")
+        pred_duration = model.predict(task_data, scaler_path=f"processed/scaler.json")
+        predictions.append(pred_duration)
+        actuals.append(actual_duration)
+
+    predictions = np.array(predictions)
+    actuals = np.array(actuals)
+
+    # === Calculate precision (Mean Absolute Percentage Error) ===
     mape = np.mean(np.abs((actuals - predictions) / actuals))
     precision_percentage = (1 - mape) * 100
-    precision_history.append(precision_percentage)
 
     early_stopper(avg_loss)
     if early_stopper.early_stop:
@@ -70,7 +81,7 @@ for epoch in range(epochs):
         break
 
     # === Print loss and precision
-    print(f"Epoch {epoch}: Avg Loss = {avg_loss:.4f}, Precision = {precision_percentage:.2f}%")
+    print(f"Epoch {epoch}: Avg Loss = {avg_loss:.4f}, Precision = {precision_percentage:.3f}%")
 
 
 # === Save trained model ===

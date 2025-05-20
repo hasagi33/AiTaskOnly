@@ -22,6 +22,8 @@ ASSIGNEE_LEVELS = ["Junior", "Mid", "Senior", "Tech Lead"]
 TECH_STACKS = ["Python", "Java", "JavaScript", "C++", "Go", "Other"]
 PRIORITY_LEVELS = ["Low", "Medium", "High", "Critical"]
 
+IS_UNSEEN = False
+
 def remove_existing_csv():
     if os.path.exists("dataset.csv"):
         os.remove("dataset.csv")
@@ -144,7 +146,7 @@ fieldnames = [
 
 #with open(current_folder+"/"+"dataset.csv", mode="a", newline="") as file:
 with open("dataset.csv", mode="a", newline="") as file:
-
+    IS_UNSEEN = False
     writer = csv.DictWriter(file, fieldnames=fieldnames)
     writer.writeheader()
 
@@ -153,13 +155,14 @@ with open("dataset.csv", mode="a", newline="") as file:
         while count < Config.dataset_rows:
             task = random_task()
             if task:
+
                 writer.writerow(task)
                 count += 1
                 pbar.update(1)
 
 # with open(current_folder+"/"+"unseen_dataset.csv", mode="a", newline="") as file:
 with open("unseen_dataset.csv", mode="a", newline="") as file:
-
+    IS_UNSEEN = True
     writer = csv.DictWriter(file, fieldnames=fieldnames)
     writer.writeheader()
     with tqdm(total=Config.dataset_rows, desc="Generating tasks") as pbar:
